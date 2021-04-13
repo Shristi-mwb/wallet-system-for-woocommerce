@@ -62,6 +62,7 @@ class Wallet_System_For_Woocommerce_Public {
 	public function wsfw_public_enqueue_styles() {
 
 		wp_enqueue_style( $this->plugin_name, WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/src/scss/wallet-system-for-woocommerce-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'mwb-public-min', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/css/mwb-public.min.css', array(), $this->version, 'all' );
 
 	}
 
@@ -75,6 +76,7 @@ class Wallet_System_For_Woocommerce_Public {
 		wp_register_script( $this->plugin_name, WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/src/js/wallet-system-for-woocommerce-public.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'wsfw_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_enqueue_script( $this->plugin_name );
+		wp_enqueue_script( 'mwb-public-min', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/js/mwb-public.min.js', array(), $this->version, 'all' );
 
 	}
 
@@ -102,6 +104,8 @@ class Wallet_System_For_Woocommerce_Public {
 				if ( $wallet_amount < $mwb_cart_total ) {
 					unset( $available_gateways['mwb_wsfw_wallet_payment_gateway'] );
 				}
+			} elseif ( isset( $wallet_amount ) && $wallet_amount <= 0 ) {
+				unset( $available_gateways['mwb_wsfw_wallet_payment_gateway'] );
 			} 
 		}
 		return $available_gateways;

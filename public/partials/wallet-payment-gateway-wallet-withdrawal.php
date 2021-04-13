@@ -9,13 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $min = get_option( 'wallet_minimum_withdrawn_amount', 0 );
-$max = get_option( 'wallet_maximum_withdrawn_amount', '' );
+//$max = get_option( 'wallet_maximum_withdrawn_amount', '' );
+$wallet_bal = get_user_meta( $user_id, 'mwb_wallet', true );
 
 ?>
 
 
 <div class='content active'>
-    <h2><?php esc_html_e( 'Wallet Withdrawal Request', 'wallet-system-for-woocommerce' ); ?></h2>
     
     <?php
     $disable_withdrawal_request = get_user_meta( $user_id, 'disable_further_withdrawal_request', true );
@@ -65,7 +65,7 @@ $max = get_option( 'wallet_maximum_withdrawn_amount', '' );
         <form method="post" action="" id="mwb_wallet_transfer_form">
             <p class="mwb-wallet-field-container form-row form-row-wide">
                 <label for="mwb_wallet_withdrawal_amount"><?php esc_html_e( 'Amount', 'wallet-system-for-woocommerce' ); ?></label>
-                <input type="number" step="0.01" min="<?php esc_attr_e( $min, 'wallet-system-for-woocommerce' ); ?>" max="<?php esc_attr_e( $max, 'wallet-system-for-woocommerce' ); ?>" id="mwb_wallet_withdrawal_amount" name="mwb_wallet_withdrawal_amount" required="">
+                <input type="number" step="0.01" min="<?php esc_attr_e( $min, 'wallet-system-for-woocommerce' ); ?>" max="<?php esc_attr_e( $wallet_bal, 'wallet-system-for-woocommerce' ); ?>" id="mwb_wallet_withdrawal_amount" name="mwb_wallet_withdrawal_amount" required="">
             </p>
             <?php
             if ( ! empty( $wallet_methods ) && is_array( $wallet_methods ) ) { ?>
@@ -104,7 +104,7 @@ $max = get_option( 'wallet_maximum_withdrawn_amount', '' );
 
             <p class="mwb-wallet-field-container form-row">
                 <input type="hidden" name="wallet_user_id" value="<?php esc_attr_e( $user_id, 'wallet-system-for-woocommerce' ); ?>">
-                <input type="submit" class="button" id="mwb_withdrawal_request" name="mwb_withdrawal_request" value="Request For Withdrawal" disabled >
+                <input type="submit" class="mwb-btn__filled button" id="mwb_withdrawal_request" name="mwb_withdrawal_request" value="Request For Withdrawal" disabled >
             </p>
         </form>
     <?php }

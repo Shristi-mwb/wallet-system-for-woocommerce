@@ -158,13 +158,6 @@ if ( empty( $wallet_bal ) ) {
 
 $wallet_tabs = array();
 
-if ( ! empty( $product_id ) && ! empty( $enable_wallet_recharge ) ) {
-    $wallet_tabs['wallet_recharge'] = array(
-        'url'       => $topup_url,
-        'icon'      => WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL.'public/images/recharge.svg',
-        'file-path' => WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_PATH.'public/partials/wallet-payment-gateway-wallet-recharge.php',
-    );
-}
 if( $wallet_bal > 0 ) {
     $wallet_tabs['wallet_transfer'] = array(
         'url'       => $wallet_url,
@@ -172,6 +165,15 @@ if( $wallet_bal > 0 ) {
         'file-path' => WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_PATH.'public/partials/wallet-payment-gateway-wallet-transfer.php',
     );
 }
+
+if ( ! empty( $product_id ) && ! empty( $enable_wallet_recharge ) ) {
+    $wallet_tabs['wallet_recharge'] = array(
+        'url'       => $topup_url,
+        'icon'      => WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL.'public/images/recharge.svg',
+        'file-path' => WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_PATH.'public/partials/wallet-payment-gateway-wallet-recharge.php',
+    );
+}
+
 if( $wallet_bal > 0 && ! empty( $wallet_methods ) && is_array( $wallet_methods ) ) {
     $wallet_tabs['wallet_withdrawal'] = array(
         'url'       => $withdrawal_url,
@@ -213,7 +215,7 @@ function show_message_on_widthdrawal_requesting( $wpg_message, $type = 'error' )
                             if ( $flag ) { ?>
                                 <li <?php  if (  $key == array_key_first ( $wallet_tabs ) ) { echo 'class="active"'; }  ?> ><a href="<?php esc_attr_e( $tab['url'], 'wallet-system-for-woocommerce' ); ?>"><img src="<?php esc_attr_e( $tab['icon'], 'wallet-system-for-woocommerce' ); ?>"></a></li>
                             <?php } else { ?>
-                                <li <?php  if ( $current_url ==  $tab['url'] ) { echo 'class="active"'; } ?> ><a href="<?php esc_attr_e( $tab['url'], 'wallet-system-for-woocommerce' ); ?>"><img src="<?php esc_attr_e( $tab['icon'], 'wallet-system-for-woocommerce' ); ?>"></a></li>
+                                <li <?php  if ( $current_url ==  $tab['url'] ) { echo 'class="active"'; } ?> ><a href="<?php esc_attr_e( $tab['url'], 'wallet-system-for-woocommerce' ); ?>"><img src="<?php esc_attr_e( $tab['icon'], 'wallet-system-for-woocommerce' ); ?>"></a><h3>Transaction</h3></li>
                             <?php }
                         } ?>
                     </ul>

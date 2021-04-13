@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div class='content active'>
-    <h2 id="demo" ><?php esc_html_e( 'Wallet Transactions', 'wallet-system-for-woocommerce' ); ?></h2>
+    <!-- <h2 id="demo" ><?php esc_html_e( 'Wallet Transactions', 'wallet-system-for-woocommerce' ); ?></h2>
 
     
 
@@ -64,8 +64,51 @@ if ( ! defined( 'ABSPATH' ) ) {
             ?>
         
         </tbody>
-    </table>
+    </table> -->
     
+    <div class="mwb-wallet-transaction-container">
+        <table class="mwb-wallet-field-table dt-responsive" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Transaction ID</th>
+                    <th>Amount</th>
+                    <th>Type (Debit/Credit)</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>1234567890</td>
+                    <td>123456</td>
+                    <td>Debit</td>
+                    <td>123456</td>                    
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1234567890</td>
+                    <td>123456</td>
+                    <td>Debit</td>
+                    <td>123456</td>                    
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1234567890</td>
+                    <td>123456</td>
+                    <td>Debit</td>
+                    <td>123456</td>                    
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1234567890</td>
+                    <td>123456</td>
+                    <td>Debit</td>
+                    <td>123456</td>                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -75,7 +118,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             
 
-    <script>
+    <!-- <script>
     jQuery( "#transactions_table tr td" ).each(function( index ) {
         var details = jQuery( this ).html();
         var patt = new RegExp("<a");
@@ -109,6 +152,6 @@ if ( ! defined( 'ABSPATH' ) ) {
         });
         
     });
-    </script>
+    </script> -->
 </div>   
     
