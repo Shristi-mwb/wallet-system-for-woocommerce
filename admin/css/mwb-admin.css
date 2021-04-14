@@ -662,11 +662,23 @@ img {
 /*====================================
 =            Tabs Section            =
 ====================================*/
-.mwb-navbar .mwb-link {
+.mwb-navbar {
+  background: #ffffff;
+  border-bottom: 0;
+  border-radius: 10px;
+  padding: 10px 30px 30px;
+  margin: 15px 15px 8px 0;
+}
+
+.mwb-navbar .mwb-navbar__items {
+  border-bottom: 1px solid #8e908f;
+}
+
+.mwb-navbar .mwb-navbar__items .mwb-link {
   color: #1d201f;
 }
 
-.mwb-navbar .mwb-link.active {
+.mwb-navbar .mwb-navbar__items .mwb-link.active {
   color: #2196f3;
 }
 
@@ -674,6 +686,13 @@ img {
 /*=======================================
 =            General section            =
 =======================================*/
+.mwb-wsfw-gen-section-form {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px 30px 30px;
+  margin: 15px 15px 8px 0;
+}
+
 .mwb-wsfw-gen-section-form .mwb-form-group {
   display: flex;
   flex-wrap: wrap;
@@ -704,11 +723,14 @@ img {
 /*======================================
 =            Wallet Section            =
 ======================================*/
-.mwb-wpg-gen-section-form {
-  margin-bottom: 50px;
+.mwb-wpg-gen-section-form-container {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px 30px 30px;
+  margin: 15px 15px 8px 0;
 }
 
-.mwb-wpg-gen-section-form h3 {
+.mwb-wpg-gen-section-form-container h3 {
   border-bottom: 1px solid #c7c7c7;
   color: #1d201f;
   font-family: "NunitoSans-ExtraBold";
@@ -719,18 +741,18 @@ img {
   padding-bottom: 15px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group {
+.mwb-wpg-gen-section-form-container .mwb-form-group {
   margin: 0 0 35px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__label {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__label {
   align-self: center;
   flex: 0 0 20%;
   max-width: 20%;
   padding: 0 15px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__label .mwb-form-label {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__label .mwb-form-label {
   color: #1d201f;
   font-family: "NunitoSans-ExtraBold";
   font-size: 16px;
@@ -739,30 +761,30 @@ img {
   letter-spacing: 0.5px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control {
   flex: 0 0 80%;
   max-width: 80%;
   padding: 0 15px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control label {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control label {
   max-height: 40px;
   padding-right: 10px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control label input {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control label input {
   padding: 0;
   max-width: 150px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control .mwb-form-select {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control .mwb-form-select {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   max-width: 360px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control .mwb-form-select input {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control .mwb-form-select input {
   border-width: 2px;
   height: 18px;
   padding: 0px !important;
@@ -770,15 +792,15 @@ img {
   width: 18px;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control .mwb-form-select input:before {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control .mwb-form-select input:before {
   background-color: #2196f3;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control .mwb-form-select input:checked {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control .mwb-form-select input:checked {
   border-color: #2196f3;
 }
 
-.mwb-wpg-gen-section-form .mwb-form-group .mwb-form-group__control .mwb-form-select label {
+.mwb-wpg-gen-section-form-container .mwb-form-group .mwb-form-group__control .mwb-form-select label {
   font-family: "NunitoSans-Regular";
   font-size: 16px;
   font-weight: 400;
@@ -794,7 +816,7 @@ img {
 }
 
 .mwb-wpg-gen-section-form-wrapper .mwb-wpg-gen-section-form {
-  flex: 0 0 calc(50% - 10px);
+  flex: 0 0 calc(50% - 20px);
   border: 1px solid #c7c7c7;
   border-radius: 5px;
   padding: 15px;
@@ -931,6 +953,13 @@ img {
   letter-spacing: 0.25px;
 }
 
+.mwb_wallet-edit--popupwrap .mwb_wallet-edit-popup #close_wallet_form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 15px;
+}
+
 .mwb_wallet-edit--popupwrap .mwb_wallet-edit-popup .mwb_wallet-edit-popup-label {
   min-width: 220px;
   text-align: left;
@@ -942,6 +971,13 @@ img {
   font-size: 16px;
   line-height: 26px;
   letter-spacing: 0.5px;
+}
+
+.mwb-wpg-gen-section-table-wrap {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px 30px 30px;
+  margin: 15px 15px 8px 0;
 }
 
 .mwb-wpg-gen-section-table-wrap h4 {
@@ -979,6 +1015,15 @@ img {
 
 .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table thead th:last-child {
   text-align: right;
+}
+
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control img {
+  flex: 0;
 }
 
 .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td {
@@ -1062,6 +1107,15 @@ img {
   text-align: left;
 }
 
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control img {
+  flex: 0;
+}
+
 .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select {
   border: 0;
 }
@@ -1078,7 +1132,127 @@ img {
   color: #f32121 !important;
 }
 
+.mwb-wpg-withdrawal-section-search {
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 15px 15px 8px 0;
+  padding: 15px;
+}
+
+.mwb-wpg-withdrawal-section-search table {
+  width: 100%;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody tr th {
+  color: #1d201f;
+  font-family: "NunitoSans-Bold";
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody tr td input {
+  padding: 5px 10px;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody tr td select {
+  height: 40px;
+  padding: 5px 30px 5px 15px !important;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody tr:first-child input {
+  width: 340px;
+}
+
 /*=====  End of Withdrawal Section  ======*/
+/*==========================================
+=            Transaction Section            =
+==========================================*/
+.mwb-section {
+  padding: 0;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search {
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 15px 15px 8px 0;
+  padding: 15px;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table {
+  width: 100%;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table tbody {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table tbody tr th {
+  color: #1d201f;
+  font-family: "NunitoSans-Bold";
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table tbody tr td input {
+  padding: 5px 10px;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table tbody tr:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 66%;
+}
+
+.mwb-section .mwb-wpg-transcation-section-search table tbody tr:first-child input {
+  width: 340px;
+}
+
+.mwb-section .mwb-wpg-transcation-section-table {
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 15px 15px 8px 0;
+  padding: 30px 30px 30px;
+}
+
+#ui-datepicker-div {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+#ui-datepicker-div .ui-datepicker-header {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 180px;
+  justify-content: center;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-corner-all {
+  padding: 5px;
+  flex: 0 0 40%;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+  text-align: right;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-title select {
+  padding: 5px 20px 5px 15px !important;
+  width: 80px;
+}
+
+/*=====  End of Transaction Section  ======*/
 
 @media screen and (max-width: 767px){
   .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {

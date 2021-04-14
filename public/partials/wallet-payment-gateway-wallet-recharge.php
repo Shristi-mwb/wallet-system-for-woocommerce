@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class='content active'>    
+<div class='content active'>
     <form method="post" action="" id="mwb_wallet_transfer_form">
         <p class="mwb-wallet-field-container form-row form-row-wide">
             <label for="mwb_wallet_recharge_amount"><?php esc_html_e( 'Enter Amount ($):', 'wallet-system-for-woocommerce' ); ?></label>

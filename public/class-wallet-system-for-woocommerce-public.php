@@ -63,7 +63,7 @@ class Wallet_System_For_Woocommerce_Public {
 
 		wp_enqueue_style( $this->plugin_name, WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/src/scss/wallet-system-for-woocommerce-public.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'mwb-public-min', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/css/mwb-public.min.css', array(), $this->version, 'all' );
-
+	
 	}
 
 	/**
@@ -198,6 +198,7 @@ class Wallet_System_For_Woocommerce_Public {
 						'payment_method'   => $payment_method,
 						'transaction_type' => htmlentities( $transaction_type ),
 						'order_id'         => $order_id,
+						'note'             => '',
 					);
 					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
 					$wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
@@ -229,6 +230,7 @@ class Wallet_System_For_Woocommerce_Public {
 						'payment_method'   => $payment_method,
 						'transaction_type' => htmlentities( $transaction_type ),
 						'order_id'         => $order_id,
+						'note'             => '',
 			
 					);
 					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
@@ -255,15 +257,7 @@ class Wallet_System_For_Woocommerce_Public {
 		$items['customer-logout'] = $logout;
 		return $items;
 	}
-	/**
-	 *  Add new query var.
-	 *
-	 * @param array $vars    Query variable.
-	 */
-	public function mwb_wsfw_wallet_query_var( $vars ) {
-		$vars[] = 'mwb-wallet';
-		return $vars;
-	}
+	
 	/**
 	 *  Register new endpoint to use for My Account page.
 	 */
@@ -276,6 +270,17 @@ class Wallet_System_For_Woocommerce_Public {
 		add_rewrite_endpoint( 'wallet-transactions', EP_PERMALINK | EP_PAGES );
 		$wp_rewrite->flush_rules();
 	}
+
+	/**
+	 *  Add new query var.
+	 *
+	 * @param array $vars    Query variable.
+	 */
+	public function mwb_wsfw_wallet_query_var( $vars ) {
+		$vars[] = 'mwb-wallet';
+		return $vars;
+	}
+	
 	/**
 	 * Add content to the new endpoint.
 	 */
