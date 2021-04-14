@@ -14,8 +14,13 @@ language: {
 	}
 }
 });
+
+	jQuery(document).on( 'click', '#update_wallet', function() {
+	//jQuery('#update_wallet').click(function(){
+		jQuery('.mwb_wallet-update--popupwrap').addClass('active');
+	});
+	
+
 });
 
-jQuery('#update_wallet').click(function(){
-	jQuery('.mwb_wallet-update--popupwrap').addClass('active');
-});
+

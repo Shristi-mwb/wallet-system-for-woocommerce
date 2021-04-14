@@ -9,11 +9,21 @@
 =            Tabs Section            =
 ====================================*/
 .mwb-navbar{
-	.mwb-link {
-		color: $c-outer-space;
+	background: $c-white;
+	border-bottom: 0;
+	border-radius: 10px;
+	padding: 10px 30px 30px;
+	margin: 15px 15px 8px 0;
 
-		&.active {
-			color: $c-doger-blue;
+	.mwb-navbar__items {
+		border-bottom: 1px solid $c-gunsmoke;
+
+		.mwb-link {
+			color: $c-outer-space;
+
+			&.active {
+				color: $c-doger-blue;
+			}
 		}
 	}
 }
@@ -24,6 +34,11 @@
 =            General section            =
 =======================================*/
 .mwb-wsfw-gen-section-form {
+	background: $c-white;
+	border-radius: 10px;
+	padding: 10px 30px 30px;
+	margin: 15px 15px 8px 0;
+
 	.mwb-form-group {
 		display: flex;
 		flex-wrap: wrap;
@@ -57,8 +72,11 @@
 /*======================================
 =            Wallet Section            =
 ======================================*/
-.mwb-wpg-gen-section-form {
-	margin-bottom: 50px;
+.mwb-wpg-gen-section-form-container {
+	background: $c-white;
+	border-radius: 10px;
+	padding: 10px 30px 30px;
+	margin: 15px 15px 8px 0;
 
 	h3 {
 		border-bottom: 1px solid $c-silver;
@@ -146,7 +164,7 @@
 	justify-content: space-between;
 
 	.mwb-wpg-gen-section-form {
-		flex: 0 0 calc(50% - 10px);
+		flex: 0 0 calc(50% - 20px);
 		border: 1px solid $c-silver;
 		border-radius: 5px;
 		padding: 15px;
@@ -285,6 +303,13 @@
 			}
 		}
 
+		#close_wallet_form {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			width: 15px;
+		}
+
 		.mwb_wallet-edit-popup-label {
 			min-width: 220px;
 			text-align: left;
@@ -301,6 +326,11 @@
 }
 
 .mwb-wpg-gen-section-table-wrap {
+	background: $c-white;
+	border-radius: 10px;
+	padding: 10px 30px 30px;
+	margin: 15px 15px 8px 0;
+
 	h4 {
 		color: $c-outer-space;
 		font-family: $ff-nunitosans-b;
@@ -337,6 +367,16 @@
 			}
 
 			tbody {
+
+				.dtr-control {
+					display: flex;
+					flex-wrap: wrap;
+
+					img {
+						flex: 0;
+					}
+				}
+
 				td {
 					border-bottom: 1px solid rgba(33, 33, 33, 0.08);
 					padding: 15px;					
@@ -441,6 +481,15 @@
 			}
 
 			tbody {
+				.dtr-control {
+					display: flex;
+					flex-wrap: wrap;
+
+					img {
+						flex: 0;
+					}
+				}
+				
 				td {
 					select {
 						border: 0;
@@ -460,4 +509,135 @@
 		}
 	}
 }
+
+.mwb-wpg-withdrawal-section-search {
+	background: $c-white;
+	border-radius: 10px;
+	margin: 15px 15px 8px 0;
+	padding: 15px;
+
+	table {
+		width: 100%;
+
+		tbody {
+			display: flex;
+			flex-wrap: wrap;
+
+			tr {
+				th {
+					color: $c-outer-space;
+					font-family: $ff-nunitosans-b;
+					font-size: $fs-normal;
+					font-weight: 700;
+					letter-spacing: 0.5px;
+				}
+
+				td {
+					input {
+						padding: 5px 10px;
+					}
+					select {
+						height: 40px;
+						padding: 5px 30px 5px 15px!important;
+					}
+				}
+
+				&:first-child {
+					input {
+						width: 340px;
+					}
+				}
+			}
+		}
+	}
+}
 /*=====  End of Withdrawal Section  ======*/
+
+/*==========================================
+=            Transaction Section            =
+==========================================*/
+.mwb-section {
+	padding: 0;
+
+	.mwb-wpg-transcation-section-search {
+		background: $c-white;
+		border-radius: 10px;
+		margin: 15px 15px 8px 0;
+		padding: 15px;
+
+		table {
+			width: 100%;
+
+			tbody {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+
+				tr {
+					th {
+						color: $c-outer-space;
+						font-family: $ff-nunitosans-b;
+						font-size: $fs-normal;
+						font-weight: 700;
+						letter-spacing: 0.5px;
+					}
+
+					td {
+						input {
+							padding: 5px 10px;
+						}
+					}
+
+					&:first-child {
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: space-between;
+						align-items: center;
+						width: 66%;
+
+						input {
+							width: 340px;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.mwb-wpg-transcation-section-table {
+		background: $c-white;
+		border-radius: 10px;
+		margin: 15px 15px 8px 0;
+		padding: 30px 30px 30px;		
+	}
+}
+
+#ui-datepicker-div {
+	background: $c-white;
+	padding: 15px;
+	border-radius: 5px;
+
+	.ui-datepicker-header {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 180px;
+		justify-content: center;
+
+		.ui-corner-all {
+			padding: 5px;
+			flex: 0 0 40%;
+		}
+
+		.ui-datepicker-next {
+			text-align: right;
+		}
+
+		.ui-datepicker-title {
+			select {
+				padding: 5px 20px 5px 15px!important;
+				width: 80px;
+			}
+		}
+	}
+}
+/*=====  End of Transaction Section  ======*/
