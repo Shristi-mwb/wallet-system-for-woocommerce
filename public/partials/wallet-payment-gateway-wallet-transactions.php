@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <tbody>
                 <?php
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'PC_wallet_transaction';
+                $table_name = $wpdb->prefix . 'mwb_wsfw_wallet_transaction';
                 $transactions = $wpdb->get_results( "SELECT * FROM $table_name WHERE user_id = $user_id ORDER BY Id DESC" );
                 if ( ! empty( $transactions ) && is_array($transactions ) ) {
                     $i = 1;
@@ -71,31 +71,6 @@ if ( ! defined( 'ABSPATH' ) ) {
             jQuery(this).children('a').removeAttr("href");
         }
     });
-    // jQuery.fn.dataTable.ext.search.push(
-    //     function (settings, data, dataIndex) {
-    //         var min = jQuery('#min').datepicker("getDate");
-    //         var max = jQuery('#max').datepicker("getDate");   
-    //         var startDate = new Date(data[4]);
-    //         if (min == null && max == null) { return true; }
-    //         if (min == null && startDate <= max) { return true;}
-    //         if(max == null && startDate >= min) {return true;}
-    //         if (startDate <= max && startDate >= min) { return true; }
-    //         return false;
-    //     }
-    // );
-    // jQuery(document).ready(function(){
-    //     //jQuery('#transactions_table').DataTable();
-    //     var table = jQuery('#transactions_table').DataTable({
-    //         "order": [[ 0, "desc" ]]
-    //     });
-    //     jQuery("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-    //     jQuery("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-        
-    //     jQuery('#min, #max').change(function () {
-    //         table.draw();
-    //     });
-        
-    // });
     </script>
 </div>   
     

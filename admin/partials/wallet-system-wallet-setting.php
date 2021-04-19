@@ -305,7 +305,7 @@ $wsfw_import_settings = apply_filters( 'wsfw_import_wallet_array', array() );
 						$wallet_bal = get_user_meta( $user->ID, 'mwb_wallet', true );
 						?>
 						<tr>
-							<td><img src="http://localhost/wallet/wp-content/plugins/wallet-system-for-woocommerce/admin/image/eva_close-outline.svg"><?php echo $i;  ?></td>
+							<td><img src="<?php echo WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL; ?>admin/image/eva_close-outline.svg"><?php echo $i;  ?></td>
 							<td><?php esc_html_e( $user->display_name, 'wallet-system-for-woocommerce' ); ?></td>
 							<td><?php esc_html_e( $user->user_email, 'wallet-system-for-woocommerce' ); ?></td>
 							<td><?php esc_html_e( $user->roles[0], 'wallet-system-for-woocommerce' ); ?></td>
@@ -333,7 +333,7 @@ $wsfw_import_settings = apply_filters( 'wsfw_import_wallet_array', array() );
 
 <div class="mwb_wallet-edit--popupwrap">
 	<div class="mwb_wallet-edit-popup">
-		<p><span id="close_wallet_form"><img src="http://localhost/wallet/wp-content/plugins/wallet-system-for-woocommerce/admin/image/cancel.svg"></span></p>
+		<p><span id="close_wallet_form"><img src="<?php echo WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL; ?>admin/image/cancel.svg"></span></p>
 		<form method="post">
 			<div class="mwb_wallet-edit-popup-content">
 				<div class="mwb_wallet-edit-popup-amount">

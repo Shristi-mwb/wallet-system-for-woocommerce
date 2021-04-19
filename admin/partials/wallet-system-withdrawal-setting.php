@@ -125,13 +125,14 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 
 <div class="mwb-wpg-gen-section-table-wrap mwb-wpg-withdrawal-section-table">
 	<h4><?php esc_html_e( 'Withdrawal Requests' , 'wallet-system-for-woocommerce' ); ?></h4>
-	<div class="mwb-wpg-gen-section-table-container">
-		<table id="mwb-wpg-gen-table" class="mwb-wpg-gen-section-table dt-responsive" style="width:100%">
+	<div class="mwb-wpg-gen-section-table-container demo">
+		<table id="mwb-wpg-gen-table1" class="mwb-wpg-gen-section-table dt-responsive" style="width:100%">
 			<thead>
 				<tr>
 					<th><?php esc_html_e( '#', 'wallet-system-for-woocommerce' ); ?></th>
 					<th><?php esc_html_e( 'Withdrawal ID', 'wallet-system-for-woocommerce' ); ?></th>
 					<th><?php esc_html_e( 'User ID', 'wallet-system-for-woocommerce' ); ?></th>
+					<th><?php esc_html_e( 'Status1', 'wallet-system-for-woocommerce' ); ?></th>
 					<th><?php esc_html_e( 'Status', 'wallet-system-for-woocommerce' ); ?></th>
 					<th><?php esc_html_e( 'Withdrawal Amount', 'wallet-system-for-woocommerce' ); ?></th>
 					<th><?php esc_html_e( 'Date', 'wallet-system-for-woocommerce' ); ?></th>
@@ -156,9 +157,10 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 						$user_id           = get_post_meta( $request->ID, 'wallet_user_id', true );
 						?>
 							<tr>
-								<td><?php echo $i; ?></td>
+								<td><img src="<?php echo WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL; ?>admin/image/eva_close-outline.svg"><?php echo $i; ?></td>
 								<td><?php echo $request->ID; ?></td>
 								<td><?php echo $user_id;  ?></td>
+								<td><?php esc_html_e( $request->post_status, 'wallet-system-for-woocommerce' ); ?></td>
 								<td>
 									<form action="" method="POST">
 										<select onchange="this.className=this.options[this.selectedIndex].className" name="mwb-wpg-gen-table_status" id="mwb-wpg-gen-table_status" aria-controls="mwb-wpg-gen-section-table" class="<?php esc_html_e( $request->post_status, 'wallet-system-for-woocommerce' ); ?>">
@@ -190,32 +192,3 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 		</table>
 	</div>
 </div>
-<script>
-jQuery(document).ready(function(){
-    var table = jQuery('#mwb-wpg-gen-table').DataTable();   //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-    jQuery('#search_in_table').keyup(function(){
-        table.search(jQuery(this).val()).draw() ;
-    });
-    jQuery('#filter_status').change(function () {
-		var rowCount = jQuery("#mwb-wpg-gen-table tbody tr").length;
-		var count = 0;
-		jQuery('#mwb-wpg-gen-table > tbody  > tr').each(function(index, tr) { 
-			var ColumnName = jQuery(tr).find('td:eq(3)').html();
-			console.log(tr);
-			console.log(ColumnName);
-			// if ( ColumnName == 'display: none;' ) {
-			// 	count++;
-			// }
-		});
-		// rowCount -= count;
-		// if ( rowCount == 0 || rowCount == 1 ) {
-		// 	$('.tablenav .displaying-num').html(rowCount + ' item');
-		// } else {
-		// 	$('.tablenav .displaying-num').html(rowCount + ' items');
-		// }
-        // table.draw();
-		console.log('gg');
-    });
-});
-
-</script>

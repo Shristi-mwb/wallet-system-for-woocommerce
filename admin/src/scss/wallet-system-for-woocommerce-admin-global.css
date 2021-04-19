@@ -483,3 +483,9 @@ select {
   .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.rejected {
     color: #f32121 !important;
   }
+
+ @media only screen and (min-width:751px) {
+    .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control img {
+        display:none!important;
+    }
+ }

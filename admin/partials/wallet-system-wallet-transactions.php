@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <tbody>
                 <?php
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'PC_wallet_transaction';
+                $table_name = $wpdb->prefix . 'mwb_wsfw_wallet_transaction';
                 $transactions = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY `Id` DESC" );
                 if ( ! empty( $transactions ) && is_array($transactions ) ) {
                     $i = 1;
@@ -66,7 +66,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $user = get_user_by( 'id', $transaction->user_id );
                         ?>
                         <tr>
-                            <td><?php echo $i; ?></td>
+                            <td><img src="<?php echo WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL; ?>admin/image/eva_close-outline.svg"><?php echo $i; ?></td>
                             <td><?php esc_html_e( $user->display_name, 'wallet-system-for-woocommerce' ); ?></td>
                             <td><?php esc_html_e( $user->user_email, 'wallet-system-for-woocommerce' ); ?></td>
                             <td><?php esc_html_e( $user->roles[0], 'wallet-system-for-woocommerce' ); ?></td>
@@ -105,15 +105,15 @@ jQuery.fn.dataTable.ext.search.push(
     }
 );
 jQuery(document).ready(function(){
-    var table = jQuery('#mwb-wpg-gen-table').DataTable();   //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
+    var table1 = jQuery('#mwb-wpg-gen-table').DataTable();   //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
     jQuery('#search_in_table').keyup(function(){
-        table.search(jQuery(this).val()).draw() ;
+        table1.search(jQuery(this).val()).draw() ;
     });
-    jQuery("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
-    jQuery("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true });
+    jQuery("#min").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
+    jQuery("#max").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
     
     jQuery('#min, #max').change(function () {
-        table.draw();
+        table1.draw();
     });
 });
 

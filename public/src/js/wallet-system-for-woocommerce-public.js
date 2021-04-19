@@ -36,11 +36,13 @@
 
 				$( '#partial_payment_wallet' ).on( 'click', function() {
 					if ( $('#partial_payment_wallet:checked').val() == 'enable' ) {
-						$( '#partial_payment_wallet_field' ).after('<p class="ajax_msg"></p><div class="discount_box" ><p class="wallet-amount" >Amount want to use from wallet</p><p class="wallet-amount form-row form-row-first"><input type="number" class="input-text" name="wallet_amount" id="wallet_amount" placeholder="Amount want to use from wallet" ></p><p class="form-row form-row-last"><button type="button" class="button" id="apply_wallet" name="apply_wallet" value="Apply coupon">Apply wallet</button></p></div>');
+						$( '.partial_payment' ).after('<tr class="partial_amount" ><td colspan="2"><p class="ajax_msg"></p><div class="discount_box"><p class="wallet-amount">Amount want to use from wallet</p><p class="wallet-amount form-row form-row-first"><input type="number" class="input-text" name="wallet_amount" id="wallet_amount" placeholder="Amount want to use from wallet"></p><p class="form-row form-row-last"><button type="button" class="button" id="apply_wallet" name="apply_wallet" value="Apply coupon">Apply wallet</button></p></div></td></tr>');
+
+						//$( '#partial_payment_wallet_field' ).after('<p class="ajax_msg"></p><div class="discount_box" ><p class="wallet-amount" >Amount want to use from wallet</p><p class="wallet-amount form-row form-row-first"><input type="number" class="input-text" name="wallet_amount" id="wallet_amount" placeholder="Amount want to use from wallet" ></p><p class="form-row form-row-last"><button type="button" class="button" id="apply_wallet" name="apply_wallet" value="Apply coupon">Apply wallet</button></p></div>');
 						
 					} else {
-						$( '.partial_payment .discount_box' ).remove();
-						$( '.partial_payment .ajax_msg' ).remove();
+						$( '.partial_amount' ).remove();
+						//$( '.partial_payment .ajax_msg' ).remove();
 						$( '.woocommerce-checkout-review-order-table .fee' ).remove();
 						
 						$(document.body).trigger('update_checkout');
@@ -102,12 +104,11 @@
 					if ( response.message !== 'Please enter amount less than or equal to wallet balance' ) {
 						console.log('update cart');
 						$( '.ajax_msg' ).html(response.message);
-	
 						$(document.body).trigger('update_checkout');
 					} else {
 						$( '.ajax_msg' ).html(response.message);
 						$( '.woocommerce-checkout-review-order-table .order-total' ).siblings('.fee').remove();
-						$(document.body).trigger('update_checkout');
+						//$(document.body).trigger('update_checkout');
 					}
 				}
 

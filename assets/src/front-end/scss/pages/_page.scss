@@ -17,7 +17,8 @@
 			flex-wrap: wrap;
 			justify-content: center;
 			margin: 0 auto;
-			width: 360px;
+			width: 100%;
+			max-width: 400px;
 
 			li {
 				background: transparent;
@@ -57,6 +58,7 @@
 
 					svg {
 						fill: transparent !important;
+						margin: 0 auto;
 					}
 				}
 
@@ -166,7 +168,7 @@
 	.mwb-wallet-field-table {
 		border-collapse: collapse;
 		border-radius: 5px;
-		border: 0;
+		border-bottom: 0 !important;
 
 		thead {
 			background-color: $c-doger-blue;
@@ -174,6 +176,7 @@
 			text-align: left;
 
 			th {
+				background-color: $c-doger-blue;
 				border: 0;
 				padding: 15px;
 				font-family: $ff-nunitosans-s;
@@ -188,11 +191,15 @@
 			text-align: left;
 
 			.odd {
-				background-color: $c-wild-sand;
+				td{
+					background-color: $c-wild-sand;
+				}
 			}
 
 			.even {
-				background-color: $c-hawkes-blue;
+				td {
+					background-color: $c-hawkes-blue;
+				}
 			}
 
 			td {
@@ -234,7 +241,47 @@
 	}
 
 	.bottom {
-		display: none;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		margin-top: 25px;
+
+		.dataTables_length {
+			font-family: $ff-nunitosans-s;
+			font-size: $fs-xm-small;
+			font-weight: 400;
+			letter-spacing: 0.25px;
+
+			select {
+				margin: 0 25px;
+				min-width: 90px;
+				padding: 5px 30px 5px 15px!important;
+			}
+		}
+
+		.dataTables_info {
+			font-family: $ff-nunitosans-s;
+			font-size: $fs-xm-small;
+			font-weight: 400;
+			letter-spacing: 0.25px;
+			margin-right: 5px;
+		}
+
+		.dataTables_paginate {
+			padding: 0;
+			span {
+				.paginate_button {
+					display: none !important;
+				}
+			}
+
+			.paginate_button {
+				&:hover {
+					background: $c-white;
+					border: 0;
+				}
+			}
+		}
 	}
 }
 

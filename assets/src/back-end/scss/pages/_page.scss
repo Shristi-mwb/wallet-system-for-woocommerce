@@ -347,6 +347,7 @@
 
 		.mwb-wpg-gen-section-table {
 			border-collapse: collapse;
+			border-bottom: 0 !important;
 
 			thead {
 				text-align: left;
@@ -481,14 +482,12 @@
 			}
 
 			tbody {
-				.dtr-control {
-					display: flex;
-					flex-wrap: wrap;
 
 					img {
-						flex: 0;
+						max-width: 20px;
+    					display: inline-block;
 					}
-				}
+				
 				
 				td {
 					select {
@@ -593,7 +592,11 @@
 						flex-wrap: wrap;
 						justify-content: space-between;
 						align-items: center;
-						width: 66%;
+						width: 60%;
+
+						@include media (mwb-desktop) { 
+							width: auto; 
+						}
 
 						input {
 							width: 340px;

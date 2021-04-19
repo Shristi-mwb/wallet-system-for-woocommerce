@@ -146,6 +146,8 @@
 			var withdrawal_id = $(this).siblings('input[name=withdrawal_id]').val();
 			var user_id = $(this).siblings('input[name=user_id]').val();
 			var status = $(this).find(":selected").text();
+			var loader = $(this).siblings('#overlay');
+			loader.show();
 			$.ajax({
 				type: 'POST',
 				url: wsfw_admin_param.ajaxurl,
@@ -156,21 +158,16 @@
 					status: status,
 				},
 				datatType: 'JSON',
-				
-				beforeSend: function(){
-					$(this).siblings('#overlay').show();
-				},
-				
-				complete: function(){
-					$(this).siblings('#overlay').hide();
-				},
 				success: function( response ) {
 					$( '.mwb-wpg-withdrawal-section-table' ).before('<div class="notice notice-' + response.msgType + ' is-dismissible mwb-errorr-8"><p>' + response.msg + '</p></div>');		
+					console.log(loader);
+					loader.hide();
 				},
 
 			})
 			.fail(function ( response ) {
 				$( '.mwb-wpg-withdrawal-section-table' ).before('<div class="notice notice-error is-dismissible mwb-errorr-8"><p>An error occured !</p></div>');		
+				loader.hide();
 			});
 		});
 
@@ -183,4 +180,4 @@
 		}
 	});
 
-	})( jQuery );
+})( jQuery );
