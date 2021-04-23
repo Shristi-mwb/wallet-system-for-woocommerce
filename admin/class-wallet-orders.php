@@ -56,6 +56,7 @@ if ( ! class_exists( 'Wallet_Orders_List' ) ) {
                 'ID'          => __( 'Order', 'wallet_payment_gateway' ),
                 'status'      => __( 'Status', 'wallet_payment_gateway' ),
                 'order_total' => __( 'Total', 'wallet_payment_gateway' ),
+                'date1'        => __( 'Date1', 'wallet_payment_gateway' ),
                 'date'        => __( 'Date', 'wallet_payment_gateway' )
             );
             return $columns;
@@ -182,7 +183,8 @@ if ( ! class_exists( 'Wallet_Orders_List' ) ) {
 						'ID' => $order->ID,
                         'status' => $order_data->get_status(),
                         'order_total' => $order_data->get_total(),
-                        'date' => $order_data->get_date_modified(),
+                        'date1' => $order_data->get_date_created(),
+                        'date' => $order_data->get_date_created(),
 					);
 				}
 			}
@@ -233,44 +235,6 @@ if ( ! class_exists( 'Wallet_Orders_List' ) ) {
             $failures = 0;
          
             switch ( $action ) {
-                  
-                // case 'mark-processing':
-                //     foreach ( $order_ids as $order_id ) {
-                //         $order      = wc_get_order( $order_id );
-                //         $order_note = 'Order Status changed by bulk edit:';
-                //         $status = $order->update_status( 'wc-processing', $order_note, true );
-                //         if ( $status ) {
-                //             $count++;
-                //         } else {
-                //             $failures++;
-                //         }
-                //     }
-                //     break;
-                // case 'mark_on-hold':
-                //     foreach ( $order_ids as $order_id ) {
-                //         $order      = wc_get_order( $order_id );
-                //         $order_note = 'Order Status changed by bulk edit:';
-                //         $status = $order->update_status( 'wc-on-hold', $order_note, true );
-                //         if ( $status ) {
-                //             $count++;
-                //         } else {
-                //             $failures++;
-                //         }
-                //     }
-                //     break;    
-                // case 'mark_completed':
-                //     foreach ( $order_ids as $order_id ) {
-                //         $order      = wc_get_order( $order_id );
-                //         $order_note = 'Order Status changed by bulk edit:';
-                //         $status = $order->update_status( 'wc-completed', $order_note, true );
-                //         if ( $status ) {
-                //             $count++;
-                //         } else {
-                //             $failures++;
-                //         }
-                //     }
-                //     break;   
-                
                 case 'trash':
                     foreach ( $order_ids as $order_id ) {
                         $order = wc_get_order( $order_id );
@@ -415,10 +379,15 @@ if ( ! class_exists( 'Wallet_Orders_List' ) ) {
                 case 'order_total': 
                     return wc_price( $item[$column_name] );
                     break;
+                case 'date1': 
+                    $date = date_create( $item[$column_name] );
+                    return date_format( $date, 'm/d/Y' );
+                    break;    
                 case 'date':
                     $date = date_create( $item[$column_name] );
                     // return date_format( $date, "M d, Y" );
-                    return date_format( $date, "d/m/Y" );
+                    $date_format = get_option( 'date_format', 'm/d/Y' );
+                    return date_format( $date, $date_format );
             }
 
         }

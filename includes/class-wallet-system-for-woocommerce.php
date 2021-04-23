@@ -81,7 +81,7 @@ class Wallet_System_For_Woocommerce {
 			$this->version = WALLET_SYSTEM_FOR_WOOCOMMERCE_VERSION;
 		} else {
 
-			$this->version = '1.0.0';
+			$this->version = '2.0.0';
 		}
 
 		$this->plugin_name = 'wallet-system-for-woocommerce';
@@ -223,8 +223,6 @@ class Wallet_System_For_Woocommerce {
 		// wallet withdrawal settings for user
 		$this->loader->add_filter( 'wsfw_wallet_withdrawal_array', $wsfw_plugin_admin, 'wsfw_admin_withdrawal_setting_page', 10 );
 
-		// Saving tab settings.
-		//$this->loader->add_action( 'admin_init', $wsfw_plugin_admin, 'wsfw_admin_save_tab_settings' );
 
 		$enable = get_option( 'mwb_wsfw_enable', '' );
 		if ( isset( $enable ) && 'on' === $enable ) {
@@ -300,7 +298,7 @@ class Wallet_System_For_Woocommerce {
 			$this->loader->add_action( 'woocommerce_cart_calculate_fees', $wsfw_plugin_public, 'wsfw_add_wallet_discount', 20 );
 			$this->loader->add_action( 'template_redirect', $wsfw_plugin_public, 'add_wallet_recharge_to_cart' );
 			$this->loader->add_filter( 'woocommerce_add_to_cart_validation', $wsfw_plugin_public, 'show_message_addto_cart', 10, 2 );
-			$this->loader->add_action( 'woocommerce_before_calculate_totals', $wsfw_plugin_public, 'mwb_update_price_cart' );
+			$this->loader->add_action( 'woocommerce_before_calculate_totals', $wsfw_plugin_public, 'mwb_update_price_cart', 10, 1 );
 			$this->loader->add_action( 'woocommerce_cart_item_removed', $wsfw_plugin_public, 'after_remove_wallet_from_cart', 10, 2 );
 			$this->loader->add_action( 'woocommerce_order_status_changed', $wsfw_plugin_public, 'mwb_order_status_changed', 10, 3 ); 
 
@@ -414,10 +412,6 @@ class Wallet_System_For_Woocommerce {
 		$wsfw_default_tabs['wallet-system-for-woocommerce-system-status'] = array(
 			'title'       => esc_html__( 'System Status', 'wallet-system-for-woocommerce' ),
 			'name'        => 'wallet-system-for-woocommerce-system-status',
-		);
-		$wsfw_default_tabs['wallet-system-for-woocommerce-template'] = array(
-			'title'       => esc_html__( 'Templates', 'wallet-system-for-woocommerce' ),
-			'name'        => 'wallet-system-for-woocommerce-template',
 		);
 		$wsfw_default_tabs['wallet-system-for-woocommerce-overview'] = array(
 			'title'       => esc_html__( 'Overview', 'wallet-system-for-woocommerce' ),
@@ -952,8 +946,25 @@ class Wallet_System_For_Woocommerce {
 								</div>
 							</div>
 	
-							<?php
-							break;
+						<?php
+						break;
+
+						case 'import_submit':
+							?>
+							<div class="mwb-form-group">
+								<div class="mwb-form-group__label"></div>
+								<div class="mwb-form-group__control">
+									<input type="submit" class="mwb-btn mwb-btn__filled" 
+									name="<?php echo ( isset( $wsfw_component['name'] ) ? esc_html( $wsfw_component['name'] ) : esc_html( $wsfw_component['id'] ) ); ?>"
+									id="<?php echo esc_attr( $wsfw_component['id'] ); ?>"
+									class="<?php echo ( isset( $wsfw_component['class'] ) ? esc_attr( $wsfw_component['class'] ) : '' ); ?>"
+									value="<?php echo esc_attr( $wsfw_component['button_text'] ); ?>"
+									/>
+								</div>
+							</div>
+	
+						<?php
+						break;	
 
 						default:
 						break;
@@ -1012,5 +1023,24 @@ class Wallet_System_For_Woocommerce {
         endif;
 	}
 
+	/**
+	 * USend mail to user on wallet update
+	 *
+	 * @param string $to
+	 * @param string $subject
+	 * @param string $mail_message
+	 * @param string $headers
+	 * @return string
+	 */
+	public function send_mail_on_wallet_updation( $to, $subject, $mail_message, $headers ) {
+		//Here put your Validation and send mail
+		$sent = wp_mail( $to, $subject, $mail_message, $headers );
+		// if( $sent ) {
+		// 	echo 'message send';
+		// }//message sent!
+		// else  {
+		// 	echo 'message not send';
+		// }
+	}
 
 }

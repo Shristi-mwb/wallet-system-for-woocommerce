@@ -41,6 +41,9 @@ if ( isset( $_POST['update_wallet'] ) && ! empty( $_POST['update_wallet'] ) ) {
 		$update = false;
 	}
 	if ( $update ) {
+
+        $wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+
 		$updated_amount = sanitize_text_field( $_POST['wallet_amount'] );
 		$wallet_action = sanitize_text_field( $_POST['action_type'] );
         $user_id = sanitize_text_field( $_POST['user_id'] );
@@ -50,6 +53,7 @@ if ( isset( $_POST['update_wallet'] ) && ! empty( $_POST['update_wallet'] ) ) {
             $wallet += $updated_amount;
             $wallet = update_user_meta( $user_id, 'mwb_wallet', $wallet );
             $transaction_type = 'Credited by admin';
+            $mail_message     = __( 'Merchant has credited your wallet by '. wc_price( $updated_amount ), 'wallet-system-for-woocommerce' );
 
         } elseif ( 'debit' == $wallet_action ) { 
             if ( $wallet < $updated_amount ) {
@@ -59,8 +63,25 @@ if ( isset( $_POST['update_wallet'] ) && ! empty( $_POST['update_wallet'] ) ) {
             }
             $wallet = update_user_meta( $user_id, 'mwb_wallet', abs($wallet) );
             $transaction_type = 'Debited by admin';
+            $mail_message     = __( 'Merchant has deducted '. wc_price( $updated_amount ). ' from your wallet.', 'wallet-system-for-woocommerce' );
             
         }
+
+        $send_email_enable = get_option( 'mwb_wsfw_enable_email_notification_for_wallet_update', '' );
+        if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+            $user = get_user_by( 'id', $user_id );
+            $name = $user->first_name . ' ' . $user->last_name;
+            $mail_text = sprintf( "Hello %s,<br/>", $name );
+            $mail_text .= $mail_message;
+            $to = $user->user_email;
+            $from = get_option( 'admin_email' );
+            $subject = "Wallet updating notification";
+            $headers = 'From: '. $from . "\r\n" .
+                'Reply-To: ' . $to . "\r\n";
+
+            $wallet_payment_gateway->send_mail_on_wallet_updation( $to, $subject, $mail_text, $headers ); 
+        }
+
         $transaction_data = array(
             'user_id'          => $user_id,
             'amount'           => $updated_amount,
@@ -70,7 +91,7 @@ if ( isset( $_POST['update_wallet'] ) && ! empty( $_POST['update_wallet'] ) ) {
             'note'             => '',
 
         );
-        $wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+
         $result = $wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
 		if ( $result ) {
             $msfw_wpg_error_text = esc_html__( 'Updated wallet of user', 'wallet-system-for-woocommerce' );
@@ -106,7 +127,7 @@ $wallet_bal = get_user_meta( $user_id, 'mwb_wallet', true );
                 <tr>
                     <th scope="row"><label for="wallet_amount"><?php esc_html_e( 'Amount ( '. get_woocommerce_currency_symbol(). ' )', 'wallet-system-for-woocommerce' ); ?></label></th>
                     <td>
-                        <input type="number" id="wallet_amount" name="wallet_amount" class="regular-text" required>
+                        <input type="number" id="wallet_amount" step="0.01" name="wallet_amount" class="regular-text" required>
                         <p class="description"><?php esc_html_e( 'Enter amount you want to credit/debit', 'wallet-system-for-woocommerce' ); ?></p>
                     </td>
                 </tr>

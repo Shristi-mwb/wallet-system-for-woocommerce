@@ -86,61 +86,13 @@ if ( ! empty ( $_REQUEST['bulk_action'] ) && ( 'delete' === $_REQUEST['bulk_acti
             $wallet_orders->display();
             ?>
         </form>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script>
-        $('.bulkactions').append('<input id="searchFrom" class="searchInput" type="text" placeholder="From d/m/y"/><input id="searchTo" class="searchInput" type="text" placeholder="To" >');
-        $(".searchInput").on("input", function() {
-            var from = stringToDate($("#searchFrom").val());
-            var to = stringToDate($("#searchTo").val());
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> 
 
-            $(".walletrechargeorders tr").each(function() {
-                var row = $(this);
-                var date = stringToDate(row.find("td").eq(3).text());
-                
-                //show all rows by default
-                var show = true;
 
-                //if from date is valid and row date is less than from date, hide the row
-                if (from && date < from)
-                show = false;
-                
-                //if to date is valid and row date is greater than to date, hide the row
-                if (to && date > to)
-                show = false;
-
-                if (show)
-                row.show();
-                else
-                row.hide();
-            });
-
-            var rowCount = $(".walletrechargeorders tbody tr").length;
-            var count = 0;
-            $('.walletrechargeorders > tbody  > tr').each(function(index, tr) { 
-                var ColumnName = $(tr).attr("style");
-                if ( ColumnName == 'display: none;' ) {
-                    count++;
-                }
-            });
-            rowCount -= count;
-            if ( rowCount == 0 || rowCount == 1 ) {
-                $('.tablenav .displaying-num').html(rowCount + ' item');
-            } else {
-                $('.tablenav .displaying-num').html(rowCount + ' items');
-            }
-        });
-
-        //parse entered date. return NaN if invalid
-        function stringToDate(s) {
-        var ret = NaN;
-        var parts = s.split("/");
-        date = new Date(parts[2], parts[0], parts[1]);
-        if (!isNaN(date.getTime())) {
-            ret = date;
-        }
-        return ret;
-        }
-        </script>
+        <?php
+        wp_enqueue_script( 'mwb-admin-custom-orders', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'admin/src/js/wallet-system-for-woocommerce-custom-orders.js', array( 'jquery' ), $this->version, false );
+        ?>
 
     </div>
 </div>

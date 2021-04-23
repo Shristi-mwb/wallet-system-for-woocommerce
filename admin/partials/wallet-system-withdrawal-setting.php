@@ -30,6 +30,8 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 		$update = false;
 	}
 	if ( $update ) {
+
+		$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
 		$updated_status = sanitize_text_field( $_POST['mwb-wpg-gen-table_status'] );
 		$withdrawal_id = sanitize_text_field( $_POST['withdrawal_id'] );
         $user_id = sanitize_text_field( $_POST['user_id'] );
@@ -49,6 +51,21 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 				if ( $update_wallet ) {
 					$withdrawal_request->post_status = 'approved';
 					wp_update_post( $withdrawal_request );
+
+					$send_email_enable = get_option( 'mwb_wsfw_enable_email_notification_for_wallet_update', '' );
+					if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+						$user = get_user_by( 'id', $user_id );
+						$name = $user->first_name . ' ' . $user->last_name;
+						$mail_text = sprintf( "Hello %s,<br/>", $name );
+						$mail_text .= __( wc_price( $withdrawal_amount ).' has been debited from wallet through your withdrawing request.', 'wallet-system-for-woocommerce' );
+						$to = $user->user_email;
+						$from = get_option( 'admin_email' );
+						$subject = "Wallet updating notification";
+						$headers = 'From: '. $from . "\r\n" .
+							'Reply-To: ' . $to . "\r\n";
+						$wallet_payment_gateway->send_mail_on_wallet_updation( $to, $subject, $mail_text, $headers );
+					}
+
 				}
 				$transaction_type = 'Wallet debited through user withdrawing request <a href="#" >#' . $withdrawal_id . '</a>';
 				$transaction_data = array(
@@ -60,7 +77,7 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 					'note'             => '',
 	
 				);
-				$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+
 				$result = $wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
 				if ( $result ) {
 					$mwb_wsfw_error_text = esc_html__( 'Wallet withdrawan request is approved for user #'.$user_id, 'wallet-system-for-woocommerce' );
@@ -103,19 +120,22 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
     <table>
             <tbody>
                 <tr>
-                    <th>Search</td>
+                    <th><?php esc_html_e( 'Search', 'wallet-system-for-woocommerce' ); ?></td>
                     <td><input type="text" id="search_in_table"></td>
                 </tr>
                 <tr>
-                    <th>Filter By:</td>
+                    <th><?php esc_html_e( 'Filter By:', 'wallet-system-for-woocommerce' ); ?></td>
                     <td>
 						<select id="filter_status" >
-							<option value="">status</option>
-							<option value="approved">approved</option>
-							<option value="pending">pending</option>
-							<option value="rejected">rejected</option>
+							<option value=""><?php esc_html_e( 'status', 'wallet-system-for-woocommerce' ); ?></option>
+							<option value="approved"><?php esc_html_e( 'approved', 'wallet-system-for-woocommerce' ); ?></option>
+							<option value="pending"><?php esc_html_e( 'pending', 'wallet-system-for-woocommerce' ); ?></option>
+							<option value="rejected"><?php esc_html_e( 'rejected', 'wallet-system-for-woocommerce' ); ?></option>
 						</select>
 					</td>
+                </tr>
+				<tr>
+                    <td><span id="clear_table" ><?php esc_html_e( 'Clear', 'wallet-system-for-woocommerce' ); ?></span></td>
                 </tr>
             </tbody>
         </table>
@@ -162,11 +182,19 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 								<td><?php echo $user_id;  ?></td>
 								<td><?php esc_html_e( $request->post_status, 'wallet-system-for-woocommerce' ); ?></td>
 								<td>
+									<?php 
+									$withdrawal_status = $request->post_status;
+									if ( 'approved' === $withdrawal_status ) { ?>
+										<span class="approved" ><?php esc_html_e( 'approved', 'wallet-system-for-woocommerce' ); ?></span>
+										<?php 
+									} elseif ( 'rejected' === $withdrawal_status ) { ?>
+										<span class="rejected" ><?php esc_html_e( 'rejected', 'wallet-system-for-woocommerce' ); ?></span>
+									<?php } else { ?> 
 									<form action="" method="POST">
 										<select onchange="this.className=this.options[this.selectedIndex].className" name="mwb-wpg-gen-table_status" id="mwb-wpg-gen-table_status" aria-controls="mwb-wpg-gen-section-table" class="<?php esc_html_e( $request->post_status, 'wallet-system-for-woocommerce' ); ?>">
-											<option class="approved" value="approved" <?php selected( 'approved', $request->post_status, true); ?> ><?php esc_html_e( 'approved', 'wallet-system-for-woocommerce' ); ?></option>
-											<option class="pending" value="pending" <?php selected( 'pending', $request->post_status, true); ?> ><?php esc_html_e( 'pending', 'wallet-system-for-woocommerce' ); ?></option>
-											<option class="rejected" value="rejected" <?php selected( 'rejected', $request->post_status, true); ?> ><?php esc_html_e( 'rejected', 'wallet-system-for-woocommerce' ); ?></option>
+											<option class="approved" value="approved" >&nbsp;&nbsp;<?php esc_html_e( 'approved', 'wallet-system-for-woocommerce' ); ?></option>
+											<option class="pending" value="pending" <?php selected( 'pending', $request->post_status, true); ?> disabled  >&nbsp;&nbsp;<?php esc_html_e( 'pending', 'wallet-system-for-woocommerce' ); ?></option>
+											<option class="rejected" value="rejected" >&nbsp;&nbsp;<?php esc_html_e( 'rejected', 'wallet-system-for-woocommerce' ); ?></option>
 										</select>
 										<input type="hidden" name="withdrawal_id" value="<?php esc_attr_e( $request->ID, 'wallet-system-for-woocommerce' ); ?>" />
 										<input type="hidden" name="user_id" value="<?php esc_attr_e( $user_id, 'wallet-system-for-woocommerce' ); ?>" />
@@ -174,10 +202,12 @@ if ( isset( $_POST['update_withdrawal_request'] ) && ! empty( $_POST['update_wit
 											<img src='<?php echo WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL."admin/image/loader.gif"; ?>' width="64" height="64" /><br>Loading..
 										</div>
 									</form>
+									<?php }
+									?>
 								</td>
 								<td><?php echo wc_price( $withdrawal_amount ); ?></td>
-								<td><?php $date = date_create($request->post_date);
-								esc_html_e( date_format( $date,"d/m/Y"), 'wallet-system-for-woocommerce' );
+								<td><?php $date_format = get_option( 'date_format', 'm/d/Y' ); $date = date_create($request->post_date);
+								esc_html_e( date_format( $date, $date_format ), 'wallet-system-for-woocommerce' );
 								?></td>					
 								<td><?php esc_html_e( get_post_meta( $request->ID , 'mwb_wallet_note' , true ), 'wallet-system-for-woocommerce' );
 								?></td>					

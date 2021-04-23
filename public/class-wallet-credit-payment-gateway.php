@@ -161,8 +161,27 @@ function mwb_wsfw_wallet_payment_gateway_init() {
 				$walletamount = get_user_meta( $customer_id, 'mwb_wallet', true );
 				if ( $order_total <= $walletamount ) {
 					
+					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
 					$walletamount -= $order_total;
-					update_user_meta( $customer_id, 'mwb_wallet', abs( $walletamount ) );
+					$update_wallet = update_user_meta( $customer_id, 'mwb_wallet', abs( $walletamount ) );
+
+					if ( $update_wallet ) {
+						$send_email_enable = get_option( 'mwb_wsfw_enable_email_notification_for_wallet_update', '' );
+						if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+							$user = get_user_by( 'id', $customer_id );
+							$name = $user->first_name . ' ' . $user->last_name;
+							$mail_text = sprintf( "Hello %s,<br/>", $name );
+							$mail_text .= __( 'Wallet debited by '. wc_price( $order_total ). ' from your wallet through purchasing.', 'wallet-system-for-woocommerce' );
+							$to = $user->user_email;
+							$from = get_option( 'admin_email' );
+							$subject = "Wallet updating notification";
+							$headers = 'From: '. $from . "\r\n" .
+								'Reply-To: ' . $to . "\r\n";
+							$wallet_payment_gateway->send_mail_on_wallet_updation( $to, $subject, $mail_text, $headers );
+							
+						}
+					}
+
 					$transaction_type = 'Wallet debited through purchasing <a href="' . admin_url('post.php?post='.$order_id.'&action=edit') . '" >#' . $order_id . '</a>';
 					$transaction_data = array(
 						'user_id'          => $customer_id,
@@ -172,7 +191,7 @@ function mwb_wsfw_wallet_payment_gateway_init() {
 						'order_id'         => $order_id,
 						'note'             => '',
 					);
-					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+					
 					$wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
 				}
 

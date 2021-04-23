@@ -74,7 +74,7 @@ class Wallet_System_For_Woocommerce_Public {
 	public function wsfw_public_enqueue_scripts() {
 
 		wp_register_script( $this->plugin_name, WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/src/js/wallet-system-for-woocommerce-public.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'wsfw_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( $this->plugin_name, 'wsfw_public_param', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ),'datatable_pagination_text' => __( 'Rows per page _MENU_', 'wallet-system-for-woocommerce' ), 'datatable_info' => __( '_START_ - _END_ of _TOTAL_', 'wallet-system-for-woocommerce' ), ) );
 		wp_enqueue_script( $this->plugin_name );
 		wp_enqueue_script( 'mwb-public-min', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'public/js/mwb-public.min.js', array(), $this->version, 'all' );
 
@@ -179,6 +179,10 @@ class Wallet_System_For_Woocommerce_Public {
 		$order_items = $order->get_items();
 		$wallet_id = get_option( 'mwb_wsfw_rechargeable_product_id', '' );
 		$walletamount = get_user_meta( $userid, 'mwb_wallet', true );
+		$user = get_user_by( 'id', $userid );
+		$name = $user->first_name . ' ' . $user->last_name;
+		$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+		$send_email_enable = get_option( 'mwb_wsfw_enable_email_notification_for_wallet_update', '' );
 		foreach ( $order_items as $item_id => $item ) {
 			$product_id = $item->get_product_id();
 			$total = $item->get_total();
@@ -190,6 +194,18 @@ class Wallet_System_For_Woocommerce_Public {
 					$amount = $total;
 					$walletamount += $total;
 					update_user_meta( $userid, 'mwb_wallet', $walletamount );
+					
+					if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+						$mail_text = sprintf( "Hello %s,<br/>", $name );
+						$mail_text .= __( 'Wallet credited by '. wc_price( $amount ). ' through wallet recharging.', 'wallet-system-for-woocommerce' );
+						$to = $user->user_email;
+						$from = get_option( 'admin_email' );
+						$subject = "Wallet updating notification";
+						$headers = 'From: '. $from . "\r\n" .
+							'Reply-To: ' . $to . "\r\n";
+						$wallet_payment_gateway->send_mail_on_wallet_updation( $to, $subject, $mail_text, $headers );
+						
+					}
 
 					$transaction_type = 'Wallet credited through purchase <a href="' . admin_url('post.php?post='.$order_id.'&action=edit') . '" >#' . $order_id . '</a>';
 					$transaction_data = array(
@@ -200,7 +216,7 @@ class Wallet_System_For_Woocommerce_Public {
 						'order_id'         => $order_id,
 						'note'             => '',
 					);
-					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+					
 					$wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
 
 				}
@@ -222,6 +238,19 @@ class Wallet_System_For_Woocommerce_Public {
 						$walletamount -= $fees;
 					}
 					update_user_meta( $userid, 'mwb_wallet', $walletamount );
+
+					if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+						$mail_text = sprintf( "Hello %s,<br/>", $name );
+						$mail_text .= __( 'Wallet debited by '. wc_price( $amount ). ' from your wallet through purchasing.', 'wallet-system-for-woocommerce' );
+						$to = $user->user_email;
+						$from = get_option( 'admin_email' );
+						$subject = "Wallet updating notification";
+						$headers = 'From: '. $from . "\r\n" .
+							'Reply-To: ' . $to . "\r\n";
+						$wallet_payment_gateway->send_mail_on_wallet_updation( $to, $subject, $mail_text, $headers );
+						
+					}
+
 					$transaction_type = 'Wallet debited through purchasing <a href="' . admin_url('post.php?post='.$order_id.'&action=edit') . '" >#' . $order_id . '</a> as discount';
 
 					$transaction_data = array(
@@ -233,7 +262,7 @@ class Wallet_System_For_Woocommerce_Public {
 						'note'             => '',
 			
 					);
-					$wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+
 					$wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
 				}
 			}
@@ -346,7 +375,6 @@ class Wallet_System_For_Woocommerce_Public {
 	 */
 	public function add_wallet_recharge_to_cart(){
 		if (  WC()->session->__isset( 'wallet_recharge' ) ) {
-			
 			$wallet_recharge = WC()->session->get( 'wallet_recharge' );
 			//check if product already in cart
 			if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
@@ -365,11 +393,31 @@ class Wallet_System_For_Woocommerce_Public {
 				}
 					
 			} else {
+				add_filter( 'woocommerce_add_cart_item_data', array( $this, 'add_wallet_topup_product_in_cart' ), 10, 2 );
 				// if no products in cart, add it
 				WC()->cart->add_to_cart( $wallet_recharge['productid'] );
+
+				// wp_safe_redirect( wc_get_checkout_url() );
+				// exit();
 			}
 			WC()->session->__unset( 'wallet_recharge' );
 		}
+	}
+
+	/**
+	 * Add credit amount to cart data.
+	 *
+	 * @param array $cart_item_data  cart data.
+	 * @param int   $product_id prduct id in cart.
+	 */
+	public function add_wallet_topup_product_in_cart( $cart_item_data, $product_id ) {
+		if (  WC()->session->__isset( 'recharge_amount' ) ) {
+			$wallet_recharge = WC()->session->get( 'recharge_amount' );
+			if ( isset( $wallet_recharge ) && ! empty( $wallet_recharge ) ) {
+				$cart_item_data['recharge_amount'] = $wallet_recharge;
+			}
+		}
+		return $cart_item_data;
 	}
 
 	/**
@@ -421,12 +469,9 @@ class Wallet_System_For_Woocommerce_Public {
 	public function mwb_update_price_cart( $cart_object ) {
 		$cart_items = $cart_object->cart_contents;
 		if (  WC()->session->__isset( 'recharge_amount' ) ) {
-			$wallet_recharge = WC()->session->get( 'recharge_amount' );
-			$price = $wallet_recharge;
-			
 			if ( ! empty( $cart_items ) ) {
 				foreach ( $cart_items as $key => $value ) {
-					$value['data']->set_price( $price );
+					$value['data']->set_price( $value['recharge_amount'] );
 					//wc_delete_product_transients( $value['product_id'] );
 				}
 		  	}
@@ -453,6 +498,12 @@ class Wallet_System_For_Woocommerce_Public {
 		
 	}
 
+	/**
+	 * Change post type to wallet_shop_order if wallet is recharge during new order place
+	 *
+	 * @param int $order_id
+	 * @return void
+	 */
 	public function change_order_type( $order_id ) {
         $order     = wc_get_order( $order_id );
 		$wallet_id = get_option( 'mwb_wsfw_rechargeable_product_id', '' );
@@ -465,6 +516,7 @@ class Wallet_System_For_Woocommerce_Public {
             }
         }
     }
+	
 
 
 }

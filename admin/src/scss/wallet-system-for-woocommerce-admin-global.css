@@ -474,18 +474,63 @@ select {
 }
 .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.approved {
     color: #03dac5 !important;
-  }
+}
   
-  .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.pending {
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.pending {
     color: #fdb51a !important;
-  }
+}
   
-  .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.rejected {
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td select.rejected {
     color: #f32121 !important;
-  }
+}
 
- @media only screen and (min-width:751px) {
+@media only screen and (min-width:751px) {
     .mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody .dtr-control img {
         display:none!important;
     }
- }
+}
+
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table .hide_date {
+    display:none;
+}
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td span.approved {
+    display: inline;
+    color: #03dac5;
+}
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container .mwb-wpg-gen-section-table tbody td span.rejected {
+    display: inline;
+    color: #f32121;
+}
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container #mwb-wpg-gen-table1 tbody td select {
+    font-size:16px;
+    padding: 0 24px 0 0!important;
+}
+.mwb-wpg-gen-section-table-wrap .mwb-wpg-gen-section-table-container #mwb-wpg-gen-table1 tbody td select option {
+    padding: 0 24px 0 0!important;
+}
+
+.mwb-wpg-withdrawal-section-search table tbody tr td span {
+    color: #2196f3;
+    font-family: NunitoSans-Bold;
+    font-size: 16px;
+    padding: 8px 3px;
+    display: inline-block;
+    cursor:pointer;
+}
+.wallet-system-for-woocommerce-overview {
+    background-color:white;
+    border-radius: 10px;
+    margin: 15px 15px 8px 0;
+    padding: 28px 32px!important;
+}
+.wallet-system-for-woocommerce-system-status {
+    background-color:white;
+    border-radius: 10px;
+    margin: 15px 15px 8px 0;
+    padding: 28px 32px!important;
+}
+.mwb-section .mwb-wpg-transcation-section-search table tbody tr td input#min, .mwb-section .mwb-wpg-transcation-section-search table tbody tr td input#max {
+    background: url(../../image/calender.png) no-repeat;
+    background-size: 20px;
+    background-position: 96% 50%;
+}

@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <th>#</th>
                     <th><?php esc_html_e( 'Transaction Id', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Amount', 'wallet-system-for-woocommerce' ); ?></th>
+                    <th><?php esc_html_e( 'Details', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Method', 'wallet-system-for-woocommerce' ); ?></th>
-                    <th><?php esc_html_e( 'Type (Debit/Credit)', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Date', 'wallet-system-for-woocommerce' ); ?></th>
                 </tr>
             </thead>
@@ -38,10 +38,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <td><?php echo $i; ?></td>
                             <td><?php echo $transaction->Id;  ?></td>
                             <td><?php echo wc_price( $transaction->amount ); ?></td>
-                            <td><?php esc_html_e( $transaction->payment_method, 'wallet-system-for-woocommerce' ); ?></td>
                             <td class="details" ><?php echo html_entity_decode( $transaction->transaction_type ); ?></td>
-                            <td><?php $date = date_create($transaction->date);
-                            esc_html_e( date_format( $date,"Y/m/d"), 'wallet-system-for-woocommerce' );
+                            <td><?php esc_html_e( $transaction->payment_method, 'wallet-system-for-woocommerce' ); ?></td>
+                            <td><?php $date_format = get_option( 'date_format', 'm/d/Y' ); $date = date_create($transaction->date);
+                            esc_html_e( date_format( $date, $date_format ), 'wallet-system-for-woocommerce' );
                             ?></td>
                         </tr>
                         <?php

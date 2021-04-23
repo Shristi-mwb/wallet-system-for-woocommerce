@@ -22,14 +22,17 @@ if ( ! defined( 'ABSPATH' ) ) {
     <table>
             <tbody>
                 <tr>
-                    <th>Search</td>
+                    <th><?php esc_html_e( 'Search', 'wallet-system-for-woocommerce' ); ?></td>
                     <td><input type="text" id="search_in_table" placeholder="Enter your Keyword"></td>
                 </tr>
                 <tr>
-                    <td><input name="min" id="min" type="text" placeholder="From"></td>
+                    <td><input name="min" id="min" type="text" placeholder="From" ></td>
                 </tr>
                 <tr>
                     <td><input name="max" id="max" type="text" placeholder="To"></td>
+                </tr>
+                <tr>
+                    <td><span id="clear_table" ><?php esc_html_e( 'Clear', 'wallet-system-for-woocommerce' ); ?></span></td>
                 </tr>
             </tbody>
         </table>
@@ -39,9 +42,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 <div class="mwb-wpg-gen-section-table-wrap mwb-wpg-transcation-section-table">
-    <h4>Transactions</h4>
+    <h4><?php esc_html_e( 'Transactions', 'wallet-system-for-woocommerce' ); ?> </h4>
     <div class="mwb-wpg-gen-section-table-container">
-        <table id="mwb-wpg-gen-table" class="mwb-wpg-gen-section-table dt-responsive" style="width:100%">
+        <table id="mwb-wpg-gen-table" class="mwb-wpg-gen-section-table dt-responsive mwb-wpg-gen-table-all-transaction" style="width:100%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -53,6 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <th><?php esc_html_e( 'Action', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Transaction ID', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Date', 'wallet-system-for-woocommerce' ); ?></th>
+                    <th class="hide_date" ><?php esc_html_e( 'Date1', 'wallet-system-for-woocommerce' ); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -74,8 +78,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <td><?php esc_html_e( $transaction->payment_method, 'wallet-system-for-woocommerce' ); ?></td>
                             <td><?php echo html_entity_decode( $transaction->transaction_type ); ?></td>
                             <td><?php echo $transaction->Id;  ?></td>
-                            <td><?php $date = date_create($transaction->date);
-                            esc_html_e( date_format( $date,"m/d/Y"), 'wallet-system-for-woocommerce' );
+                            <td><?php $date_format = get_option( 'date_format', 'm/d/Y' ); $date = date_create($transaction->date);
+                            esc_html_e( date_format( $date, $date_format ), 'wallet-system-for-woocommerce' );
+                            ?></td>
+                            <td class="hide_date" ><?php $date = date_create($transaction->date);
+                            esc_html_e( date_format( $date, 'Y-m-d' ), 'wallet-system-for-woocommerce' );
                             ?></td>
                         </tr>
                         <?php
@@ -91,30 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> 
-<script>
-jQuery.fn.dataTable.ext.search.push(
-    function (settings, data, dataIndex) {
-        var min = jQuery('#min').datepicker("getDate");
-        var max = jQuery('#max').datepicker("getDate");   
-        var startDate = new Date(data[8]);
-        if (min == null && max == null) { return true; }
-        if (min == null && startDate <= max) { return true;}
-        if(max == null && startDate >= min) {return true;}
-        if (startDate <= max && startDate >= min) { return true; }
-        return false;
-    }
-);
-jQuery(document).ready(function(){
-    var table1 = jQuery('#mwb-wpg-gen-table').DataTable();   //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-    jQuery('#search_in_table').keyup(function(){
-        table1.search(jQuery(this).val()).draw() ;
-    });
-    jQuery("#min").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
-    jQuery("#max").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
-    
-    jQuery('#min, #max').change(function () {
-        table1.draw();
-    });
-});
 
-</script>
+<?php
+wp_enqueue_script( 'mwb-admin-all-transaction-table', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'admin/src/js/wallet-system-for-woocommerce-all-transaction-table.js', array( 'jquery' ), $this->version, false );
+?>

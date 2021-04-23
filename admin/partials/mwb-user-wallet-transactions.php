@@ -26,7 +26,7 @@ $user = get_user_by( 'id', $user_id );
     <table>
             <tbody>
                 <tr>
-                    <th>Search</th>
+                    <th><?php esc_html_e( 'Search', 'wallet-system-for-woocommerce' ); ?></th>
                     <td><input type="text" id="search_in_table" placeholder="Enter your Keyword"></td>
                 </tr>
                 <tr>
@@ -34,6 +34,9 @@ $user = get_user_by( 'id', $user_id );
                 </tr>
                 <tr>
                     <td><input name="max" id="max" type="text" placeholder="To"></td>
+                </tr>
+                <tr>
+                    <td><span id="clear_table" ><?php esc_html_e( 'Clear', 'wallet-system-for-woocommerce' ); ?></span></td>
                 </tr>
             </tbody>
         </table>
@@ -56,6 +59,7 @@ $user = get_user_by( 'id', $user_id );
                     <th><?php esc_html_e( 'Payment Method', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Action', 'wallet-system-for-woocommerce' ); ?></th>
                     <th><?php esc_html_e( 'Date', 'wallet-system-for-woocommerce' ); ?></th>
+                    <th class="hide_date" ><?php esc_html_e( 'Date', 'wallet-system-for-woocommerce' ); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -73,8 +77,11 @@ $user = get_user_by( 'id', $user_id );
                             <td><?php echo wc_price( $transaction->amount ); ?></td>
                             <td><?php esc_html_e( $transaction->payment_method, 'wallet-system-for-woocommerce' ); ?></td>
                             <td><?php echo html_entity_decode( $transaction->transaction_type ); ?></td>
-                            <td><?php $date = date_create($transaction->date);
-                            esc_html_e( date_format( $date,"m/d/Y"), 'wallet-system-for-woocommerce' );
+                            <td><?php $date_format = get_option( 'date_format', 'm/d/Y' ); $date = date_create($transaction->date);
+                            esc_html_e( date_format( $date, $date_format ), 'wallet-system-for-woocommerce' );
+                            ?></td>
+                            <td class="hide_date" ><?php $date = date_create($transaction->date);
+                            esc_html_e( date_format( $date, 'm/d/Y' ), 'wallet-system-for-woocommerce' );
                             ?></td>
                         </tr>
                         <?php
@@ -87,30 +94,7 @@ $user = get_user_by( 'id', $user_id );
     </div>
 </div>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> 
-<script>
-jQuery.fn.dataTable.ext.search.push(
-    function (settings, data, dataIndex) {
-        var min = jQuery('#min').datepicker("getDate");
-        var max = jQuery('#max').datepicker("getDate");   
-        var startDate = new Date(data[5]);
-        if (min == null && max == null) { return true; }
-        if (min == null && startDate <= max) { return true;}
-        if(max == null && startDate >= min) {return true;}
-        if (startDate <= max && startDate >= min) { return true; }
-        return false;
-    }
-);
-jQuery(document).ready(function(){
-    var table1 = jQuery('#mwb-wpg-gen-table').DataTable();   //pay attention to capital D, which is mandatory to retrieve "api" datatables' object, as @Lionel said
-    jQuery('#search_in_table').keyup(function(){
-        table1.search(jQuery(this).val()).draw() ;
-    });
-    jQuery("#min").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
-    jQuery("#max").datepicker({ onSelect: function () { table1.draw(); }, changeMonth: true, changeYear: true });
-    
-    jQuery('#min, #max').change(function () {
-        table1.draw();
-    });
-});
 
-</script>
+<?php
+wp_enqueue_script( 'mwb-admin-user-transaction-table', WALLET_SYSTEM_FOR_WOOCOMMERCE_DIR_URL . 'admin/src/js/wallet-system-for-woocommerce-user-transaction-table.js', array( 'jquery' ), $this->version, false );
+?>

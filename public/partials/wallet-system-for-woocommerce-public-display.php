@@ -63,6 +63,28 @@ if ( isset( $_POST['mwb_proceed_transfer'] ) && ! empty( $_POST['mwb_proceed_tra
         $returnid = update_user_meta( $another_user_id , 'mwb_wallet', $user_wallet_bal );
         
         if ( $returnid ) {
+            $wallet_payment_gateway = new Wallet_System_For_Woocommerce();
+            $send_email_enable = get_option( 'mwb_wsfw_enable_email_notification_for_wallet_update', '' );
+            if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+                // first user
+                $user1 = get_user_by( 'id', $another_user_id );
+                $name1 = $user1->first_name . ' ' . $user1->last_name;
+
+                $user2 = get_user_by( 'id', $user_id );
+                $name2 = $user2->first_name . ' ' . $user2->last_name; 
+
+                $mail_text1 = sprintf( "Hello %s,<br/>", $name1 );
+                $mail_text1 .= __( 'Wallet credited by '. wc_price( $transfer_amount ) . ' through wallet transfer by .' . $name2, 'wallet-system-for-woocommerce' );
+                $to1 = $user1->user_email;
+                $from = get_option( 'admin_email' );
+                $subject = "Wallet updating notification";
+                $headers1 = 'From: '. $from . "\r\n" .
+                    'Reply-To: ' . $to1 . "\r\n";
+
+                $wallet_payment_gateway->send_mail_on_wallet_updation( $to1, $subject, $mail_text1, $headers1 );    
+                
+            }
+
             $transaction_type = 'Wallet credited by user #'. $user_id . ' to user #' . $another_user_id;
             $wallet_transfer_data = array(
                 'user_id'          => $another_user_id,
@@ -74,13 +96,21 @@ if ( isset( $_POST['mwb_proceed_transfer'] ) && ! empty( $_POST['mwb_proceed_tra
     
             );
 
-            $wallet_payment_gateway = new Wallet_System_For_Woocommerce();
             $wallet_payment_gateway->insert_transaction_data_in_table( $wallet_transfer_data );
 
             $wallet_bal -= $transfer_amount;
             $update_user = update_user_meta( $user_id, 'mwb_wallet', abs( $wallet_bal ) );
             if ( $update_user ) {
                 
+                if ( isset( $send_email_enable ) && 'on' === $send_email_enable ) {
+                    $mail_text2 = sprintf( "Hello %s,<br/>", $name2 );
+                    $mail_text2.= __( 'Wallet debited by '. wc_price( $transfer_amount ) . ' through wallet transfer to .' . $name1, 'wallet-system-for-woocommerce' );
+                    $to2 = $user2->user_email;
+                    $headers2 = 'From: '. $from . "\r\n" .
+                        'Reply-To: ' . $to2 . "\r\n";
+
+                    $wallet_payment_gateway->send_mail_on_wallet_updation( $to2, $subject, $mail_text2, $headers2 );    
+                }
                 $transaction_type = 'Wallet debited from user #'. $user_id . ' wallet, transferred to user #' . $another_user_id;
                 $transaction_data = array(
                     'user_id'          => $user_id,
@@ -94,8 +124,6 @@ if ( isset( $_POST['mwb_proceed_transfer'] ) && ! empty( $_POST['mwb_proceed_tra
     
                 $result = $wallet_payment_gateway->insert_transaction_data_in_table( $transaction_data );
                 show_message_on_form_submit( 'Amount is transferred successfully', 'woocommerce-message' );
-                // echo '<script>alert("Amount is transferred successfully");
-                // window.location.href = "' . $current_url . '";</script>';
             } else {
                 show_message_on_form_submit( 'Amount is not transferred', 'woocommerce-error' );
             }
