@@ -36,7 +36,7 @@ Wallet System for WooCommerce increases the ease and security of the payment pro
 ### PLUGIN MEETS YOUR REQUIREMENT, SO 
 [**Download Now !!**](https://downloads.wordpress.org/plugin/wallet-system-for-woocommerce.zip) 
 
-Visit [**Wallet System for WooCommerce Documentation**](https://docs.makewebbetter.com/wallet-system-for-woocommerce/?utm_source=MWB-wallet-org&utm_medium=MWB-ORG-Page&utm_campaign=MWB-doc)
+Visit [**Wallet System for WooCommerce Documentation**](https://docs.makewebbetter.com/wallet-system-for-woocommerce/?utm_source=MWB-wallet-git&utm_medium=MWB-git-Page&utm_campaign=MWB-doc)
 
 ## SALIENT FEATURES OF WALLET SYSTEM FOR WOOCOMMERCE
 
@@ -58,7 +58,7 @@ The customers’ wallet transactions history contains entries for wallet recharg
 ### 6) Wallet Amount Transfer
 The customers can transfer their wallet amount into other customers’ wallets. It will help the merchants to increase the user interaction on their WooCommerce store and result in an increase in the wallet user base. 
 
- [***Free demo of Wallet System for WooCommerce**](https://demo.makewebbetter.com/wallet-system-for-woocommerce/?utm_source=MWB-wallet-org&utm_medium=MWB-ORG-Page&utm_campaign=MWB-demo)
+ [**Free demo of Wallet System for WooCommerce**](https://demo.makewebbetter.com/wallet-system-for-woocommerce/?utm_source=MWB-wallet-git&utm_medium=MWB-git-Page&utm_campaign=MWB-demo)
  
 ## WHAT PREMIUM VERSION OF WOOCOMMERCE  WALLET SYSTEM OFFERS (COMING SOON)
 
